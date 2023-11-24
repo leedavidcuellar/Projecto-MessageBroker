@@ -191,7 +191,6 @@ public class Operations {
         LOGGER.info("Destination Wallet: {} The New Balance Account JavaCoin is: {}", destinationWallet.getIdWallet(), destinationWallet.getBalanceJavaCoin());
         LOGGER.info("Transaction Status:{} nro Order: {} DNI Customer: {} you buy: {} JavaCoin, at this price: U$D {} and this commission: {}%\n",
                 order.getStatus(), order.getIdTransaction(), origenAccount.getDniAccount(), order.getAmount(), order.getPrice(), order.getCommission() * 100);
-
     }
 
     /***
@@ -226,13 +225,19 @@ public class Operations {
         if (transactionDTO.getType().equals(TypeTransaction.BUY)
                 && buyAccount.getBalanceDollar().compareTo(auxCommissionBalance)<0) {
                 response= Boolean.FALSE;
-                sendErrorBankWallet(new OperationException("Insufficient balance in dollars to buy Java Coin, Origin Account: "+buyAccount.getIdAccount()).getMessage());
+                sendErrorBankWallet(new OperationException("Insufficient balance in dollars to buy Java Coin, Origin Account: "+buyAccount.getIdAccount()+"\n").getMessage());
+        }
+
+        if (transactionDTO.getType().equals(TypeTransaction.BUY)
+                && sellWallet.getBalanceJavaCoin().compareTo(auxJavaCoin)<0) {
+            response= Boolean.FALSE;
+            sendErrorBankWallet(new OperationException("Insufficient balance in Java Coin to sell it, Destination Account: "+sellWallet.getIdWallet()+"\n").getMessage());
         }
 
         if (transactionDTO.getType().equals(TypeTransaction.SELL)
                 && sellWallet.getBalanceJavaCoin().compareTo(auxJavaCoin)<0) {
             response= Boolean.FALSE;
-            sendErrorBankWallet(new OperationException("Insufficient balance in Java Coin to sell").getMessage());
+            sendErrorBankWallet(new OperationException("Insufficient balance in Java Coin to sell, Origin Account: "+sellWallet.getIdWallet()).getMessage());
         }
          return response;
     }

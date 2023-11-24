@@ -62,8 +62,13 @@ public class JavaCoinApplication {
             //Commission 5%
             operations.sendTransaction(customer1.getDniCustomer(), customer4.getDniCustomer());
 
-            //Error Insufficient balance to operate
+            Thread.sleep(2000);
+            //Error Insufficient balance to Operate No Dollars
             operations.sendTransaction(customer5.getDniCustomer(), customer4.getDniCustomer());
+
+            Thread.sleep(4000);
+            //Error Insufficient balance to Operate No Java Coin
+            operations.sendTransaction(customer4.getDniCustomer(), customer6.getDniCustomer());
 
         };
     }
